@@ -6,7 +6,7 @@
 
 @layer components {
     .card__container, .new__comment--container {
-        @apply w-full flex mx-auto flex-col gap-5 items-center -translate-x-[2.5%] mb-5
+        @apply w-full flex mx-auto flex-col items-center -translate-x-[2.5%] mb-5 
     }
 
     .card {
@@ -14,23 +14,20 @@
     }
 
     .comment__card {
-        @apply w-full mx-auto p-5 md:relative bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5
+        @apply w-full mx-auto p-5 md:relative bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5 
+    }
+
+    .replies {
+        @apply w-[95%] self-end flex flex-col relative before:content-[''] before:w-[2px] before:bg-Light-gray before:absolute before:top-0 before:left-[0] before:min-h-full 
     }
 
     .reply__card {
-        @apply w-[95%] self-end p-5 relative bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5 before:content-[''] before:w-[2px] before:bg-Light-gray before:absolute before:-left-[5%] before:min-h-full
+        @apply w-full p-5 bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5 
     }
 
-    .reply__card:first-of-type {
-        @apply before:top-0
-    }
-
-    .reply__card:not(:first-of-type) {
-        @apply before:-top-5
-    }
 
     .card__header {
-        @apply flex gap-4 md:mb-5 items-center
+        @apply w-full flex gap-4 md:mb-5 items-center
     }
 
     .avatar {
@@ -42,7 +39,11 @@
     }
 
     .createdat {
-        @apply text-Grayish-Blue font-semibold
+        @apply text-Grayish-Blue
+    }
+
+    .card-content {
+        @apply w-full
     }
 
     .card__content .content {
