@@ -593,6 +593,7 @@ video {
 }
 
 .comment__card{
+  position: relative;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -610,7 +611,6 @@ video {
 
 @media (min-width: 768px){
   .comment__card{
-    position: relative;
     flex-direction: row-reverse;
   }
 }

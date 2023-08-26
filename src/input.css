@@ -14,7 +14,7 @@
     }
 
     .comment__card {
-        @apply w-full mx-auto p-5 md:relative bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5 
+        @apply w-full mx-auto p-5 relative bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5 
     }
 
     .replies {
