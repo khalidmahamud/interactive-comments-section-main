@@ -6,11 +6,11 @@
 
 @layer components {
     .card__container, .new__comment--container {
-        @apply w-full flex mx-auto flex-col items-center -translate-x-[2.5%] mb-5 
+        @apply w-full flex mx-auto flex-col items-center -translate-x-[2.5%]
     }
 
     .card {
-        @apply w-[95%] self-end flex flex-col gap-5
+        @apply w-[95%] self-end flex flex-col flow
     }
 
     .comment__card {
@@ -18,16 +18,23 @@
     }
 
     .replies {
-        @apply w-[95%] self-end flex flex-col relative before:content-[''] before:w-[2px] before:bg-Light-gray before:absolute before:top-0 before:left-[0] before:min-h-full 
+        @apply w-[95%] self-end flex flex-col relative before:content-[''] before:w-[2px] before:bg-Light-gray before:absolute before:top-0 before:left-[0] before:h-[calc(100%-15px)]
     }
 
     .reply__card {
-        @apply w-full p-5 bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5 
+        @apply w-full p-5 bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5 relative
     }
 
+    .reply__card.editable {
+        @apply md:pb-20
+    }
+
+    .header-content--container {
+        @apply w-full
+    }
 
     .card__header {
-        @apply w-full flex gap-4 md:mb-5 items-center
+        @apply w-full flex gap-4 mb-4 items-center
     }
 
     .avatar {
@@ -36,6 +43,10 @@
 
     .username {
         @apply font-bold text-Dark-blue
+    }
+
+    .user__highlighter {
+        @apply  bg-Moderate-blue text-white px-2 rounded-sm
     }
 
     .createdat {
@@ -50,29 +61,67 @@
         @apply text-Grayish-Blue
     }
 
+    .card__content .content[contenteditable="true"] {
+        @apply border-2 border-Light-gray rounded-md p-2
+    }
+
     .card__footer {
         @apply  flex justify-between items-center
     }   
 
     .score__feature {
-        @apply  flex md:flex-col-reverse gap-3 md:self-start justify-center items-center bg-Very-light-gray rounded-lg p-2.5 px-4 md:px-2.5 md:py-4
+        @apply  flex md:flex-col-reverse gap-3 md:self-start justify-center items-center bg-Very-light-gray rounded-lg py-2 px-2 md:px-2 md:py-2
     } 
 
     .score__feature .score {
-        @apply text-sm w-5 font-semibold text-Moderate-blue text-center
+        @apply text-sm w-3 font-semibold text-Moderate-blue text-center
     }
+
+    .plus__btn,
+    .minus__btn {
+        @apply p-1
+    }
+
 
     .minus__btn:hover > svg path,
     .plus__btn:hover > svg path {
         @apply fill-Moderate-blue
     }
 
-    .reply__btn {
-        @apply flex items-center gap-2 text-Moderate-blue text-[1rem] font-semibold hover:text-opacity-30 md:absolute top-5 right-5
+
+    .reply__btn, 
+    .delete__button, 
+    .edit__button {
+        @apply flex items-center gap-2  text-[1rem] font-semibold hover:text-opacity-30
     }
 
-    .reply__btn:hover > svg path {
-        @apply opacity-30
+    .reply__btn {
+        @apply text-Moderate-blue md:absolute md:top-5 md:right-5
+    }
+
+    .reply__btn:hover svg > path,  
+    .edit__button:hover svg > path{
+        @apply fill-Light-grayish-blue
+    }
+
+    .delete__button:hover svg > path {
+        @apply fill-Pale-red
+    }
+
+    .delete__button {
+        @apply text-Soft-Red
+    }
+
+    .edit__button {
+        @apply text-Moderate-blue
+    }
+
+    .edit__button[disabled] {
+        @apply hidden
+    }
+
+    .modify__comment {
+        @apply flex gap-4 items-center md:absolute md:top-5 md:right-5
     }
     
     .new__comment {
@@ -80,7 +129,7 @@
     }
 
     .new__reply {
-        @apply w-[95%] bg-white self-end rounded-lg p-5 flex gap-5 flex-wrap md:flex-nowrap justify-between
+        @apply w-full bg-white self-end rounded-lg p-5 flex gap-5 flex-wrap md:flex-nowrap justify-between
     }
 
     .comment__box {
@@ -92,6 +141,24 @@
     }
 
     .send__button {
-        @apply bg-Moderate-blue text-sm font-rubik font-normal text-white rounded-lg px-6 py-3 h-min uppercase hover:opacity-30
+        @apply bg-Moderate-blue text-sm font-rubik font-normal text-white rounded-lg px-6 py-3 h-min uppercase hover:bg-Light-grayish-blue
+    }
+    
+    .update__button {
+        @apply hidden cursor-pointer absolute top-3 right-5 md:top-auto md:right-5 md:bottom-5 bg-Moderate-blue text-lg font-rubik font-normal text-white rounded-lg px-5 py-2 h-min uppercase hover:bg-Light-grayish-blue
+    }
+
+    .update__button.active {
+        @apply block;
+    }
+    
+    .create__reply--btn {
+        @apply bg-Moderate-blue text-sm font-rubik font-normal text-white rounded-lg px-6 py-3 h-min uppercase hover:bg-Light-grayish-blue
+    }
+}
+
+@layer utilities {
+    .flow > *:where(:not(:first-child)) {
+        margin-top: var(--flow-space, 1rem);
     }
 }
