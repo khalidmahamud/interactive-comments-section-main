@@ -25,6 +25,8 @@
         @apply w-full p-5 bg-white rounded-lg shadow-sm flex flex-col md:flex-row-reverse gap-5 relative
     }
 
+    /* add the padding botton when comment__card and reply__card is going to be edited */
+    .comment__card.editable, 
     .reply__card.editable {
         @apply md:pb-20
     }
@@ -42,15 +44,15 @@
     }
 
     .username {
-        @apply font-bold text-Dark-blue
+        @apply font-bold text-Dark-blue text-sm md:text-inherit
     }
 
     .user__highlighter {
-        @apply  bg-Moderate-blue text-white px-2 rounded-sm
+        @apply  bg-Moderate-blue text-white px-2 rounded-sm text-xs md:text-sm
     }
 
     .createdat {
-        @apply text-Grayish-Blue
+        @apply text-Grayish-Blue text-xs md:text-sm
     }
 
     .card-content {
@@ -61,6 +63,7 @@
         @apply text-Grayish-Blue
     }
 
+    /* style for when p is changed to editable */
     .card__content .content[contenteditable="true"] {
         @apply border-2 border-Light-gray rounded-md p-2
     }
@@ -116,16 +119,12 @@
         @apply text-Moderate-blue
     }
 
-    .edit__button[disabled] {
-        @apply hidden
-    }
-
     .modify__comment {
         @apply flex gap-4 items-center md:absolute md:top-5 md:right-5
     }
     
     .new__comment {
-        @apply w-full bg-white self-end rounded-lg p-5 flex gap-5 flex-wrap md:flex-nowrap justify-between
+        @apply w-full bg-white self-end rounded-lg p-5 flex gap-5 flex-wrap md:flex-nowrap justify-between translate-x-[2.5%]
     }
 
     .new__reply {
@@ -145,7 +144,7 @@
     }
     
     .update__button {
-        @apply hidden cursor-pointer absolute top-3 right-5 md:top-auto md:right-5 md:bottom-5 bg-Moderate-blue text-lg font-rubik font-normal text-white rounded-lg px-5 py-2 h-min uppercase hover:bg-Light-grayish-blue
+        @apply hidden cursor-pointer md:absolute md:top-auto md:right-5 md:bottom-5 bg-Moderate-blue text-lg font-rubik font-normal text-white rounded-lg px-5 py-2 h-min uppercase hover:bg-Light-grayish-blue
     }
 
     .update__button.active {

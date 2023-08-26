@@ -1,15 +1,17 @@
-const mainTextBox = document.querySelector('#comment-text-box');
-const sendButton = document.querySelector('.send__button');
-const replyBtn = document.querySelectorAll('.reply__btn');
-let deleteCommentBtn = document.querySelectorAll('.delete__button');
-const editCommentBtn = document.querySelectorAll('.edit__button');
-const modal = document.querySelector('.modal__container');
-const confirmDeleteBtn = document.querySelector('#confirm-delete__btn');
-const cancelDeleteBtn = document.querySelector('#cancel-delete__btn');
+const mainTextBox = document.querySelector('#comment-text-box');  // textarea
+const sendButton = document.querySelector('.send__button'); // new comment send button
+const replyBtn = document.querySelectorAll('.reply__btn'); // reply to a comment button
+let deleteCommentBtn = document.querySelectorAll('.delete__button'); // delete a comment button
+const editCommentBtn = document.querySelectorAll('.edit__button'); // edit a comment button
+const modal = document.querySelector('.modal__container'); // modal after delete comment button is clicked
+const confirmDeleteBtn = document.querySelector('#confirm-delete__btn'); // delete confirmation button in the modal
+const cancelDeleteBtn = document.querySelector('#cancel-delete__btn'); // cancel deletion button in the modal
 
-let commentToBeDeleted;
-let currentUser;
+let commentToBeDeleted; // vaiable to store which comment will be deleted
+let currentUser; 
 
+
+// fetech user data from data.json file
 fetch('./data.json')
   .then(response => response.json())
   .then(data => {
@@ -20,19 +22,26 @@ fetch('./data.json')
   });
 
 
+// get the contenct that is in the textarea
 function getContent(parentElementClass) {
   let content;
 
+  // select the textarea of the main comment create section
   if(parentElementClass === 'comment__card') {
     content = document.querySelector('#comment-text-box');
   }
+  // select the textarea of the new reply comment section
   else if(parentElementClass === 'reply__card') {
     content = document.querySelector('#reply-text-box');
   }
 
+  //return the text in text area
   return content.value;
 }
 
+// create a new coomment. 
+//'paerntElement'- where the new comment will be appended
+// 'className' - which type of comment card will be created. Either a new comment a or a reply to a existing comment
 function createNewComment(parentElement, className) {
     const card = document.createElement('div');
     card.setAttribute('class', 'card');
@@ -86,6 +95,7 @@ function createNewComment(parentElement, className) {
           parentElement.appendChild(card);
 }
 
+// reply to an existing comment. 'targeElement' - the comment user is going to reply to
 function reply(targetElement) {
     const replyTo = targetElement.getAttribute('aria-owns');
 
@@ -105,6 +115,7 @@ function reply(targetElement) {
     textBox.value = '@' + replyTo + ' ';
 }
 
+// edit the commment of the user. 'targetElement' is goiong to select which comment or reply of user is going to be edited
 function editComment(targetElement) {
   const replyTo = targetElement.getAttribute('aria-owns');
 
@@ -124,27 +135,35 @@ function editComment(targetElement) {
   textBox.value = target;
 }
 
+// if user is going to create a new reply other acitve reply box should dissappear
 function removeNewReplyCard() {
     const newReplyCard = document.querySelector('.new__reply');
     
     if(newReplyCard) newReplyCard.remove();
 }
 
+
+//create a new comment card when send button is clicked from the new comment creation section
 sendButton.addEventListener('click', () => {
-    const cardContainer = sendButton.parentElement.parentElement.parentElement;
+    const container = sendButton.parentElement.parentElement.parentElement;
+    const cardContainer = container.querySelector('.card__container');
+
     createNewComment(cardContainer, 'comment__card')
+
 });
 
+// select reply button of the comment or reply user is going to reply to
 replyBtn.forEach(btn => {
   const card = btn.parentElement.parentElement.parentElement;
-  const replies = card.querySelector('.replies');
+  const replies = card.querySelector('.replies'); // select the replies section of the comment user is goiong to reply to
 
   btn.addEventListener('click', () => {
     removeNewReplyCard();
-    reply(btn.parentElement.parentElement);
+    reply(btn.parentElement.parentElement); // create a new reply section bleow the comment or reply user is going to reply to
 
     const createNewReplyBtn = document.querySelector('.create__reply--btn');
 
+    // add the new reply to the replies section of the comment user is going to reply to
     createNewReplyBtn.addEventListener('click', () => {
         createNewComment(replies, 'reply__card');  
         removeNewReplyCard();
@@ -153,7 +172,7 @@ replyBtn.forEach(btn => {
 });
 
 
-
+// if new comment creation texarea is selcted other new reply creationo section will be removed
 mainTextBox.addEventListener('focus', () => {
   removeNewReplyCard();
 });
@@ -169,61 +188,86 @@ confirmDeleteBtn.addEventListener('click', () => {
 });
 
 
+// what happend when different button on the document is clicked
+// we will use class to select the button 
 document.addEventListener('click', (e) => {
+  // select delete button of the user comment or reply user is going to select
   if(e.target.classList.contains('delete__button')) {
     modal.classList.remove('invisible');
     commentToBeDeleted = e.target.parentElement.parentElement.parentElement;
   }
 
   //increase or decrease score
+  // if the user clicks on the svg of the plus__btn button
   if(e.target.parentElement.classList.contains('plus__btn') && e.target.parentElement.classList.contains('active')) {
-    const scoreFeature = e.target.parentElement.parentElement;
-    const score = scoreFeature.children[1];
-    score.innerText = (Number(score.innerText) + 1);
-    e.target.parentElement.classList.toggle('active');
-    scoreFeature.children[0].classList.toggle('active');
+    const scoreFeature = e.target.parentElement.parentElement; // select the score feature section the svg belongs to
+    const score = scoreFeature.children[1]; // select the 'score' element that has the score
+    score.innerText = (Number(score.innerText) + 1); // convert the score text into number and decrease by one
+    e.target.parentElement.classList.toggle('active'); // deactivate the plus button after score is increased one time
+    scoreFeature.children[0].classList.toggle('active'); // activate the minus button after the score is increased once
   }
+  // if the user clicks on the svg of the minus__btn button 
   if(e.target.parentElement.classList.contains('minus__btn') && e.target.parentElement.classList.contains('active')) {
-    const scoreFeature = e.target.parentElement.parentElement;
-    const score = scoreFeature.children[1];
-    score.innerText = (Number(score.innerText) + 1);
-    e.target.parentElement.classList.toggle('active');
-    scoreFeature.children[2].classList.toggle('active');
+    const scoreFeature = e.target.parentElement.parentElement; // select the score feature section the svg belongs to
+    const score = scoreFeature.children[1]; // select the 'score' element that has the score
+    score.innerText = (Number(score.innerText) - 1); // convert the score text into number and decrease by one
+    e.target.parentElement.classList.toggle('active'); // deactivate the minus button after score is decreased one time
+    scoreFeature.children[2].classList.toggle('active'); // activate the plus button after the score is decreased once
   }
+  // if the user clicks on the plus__btn button
   if(e.target.classList.contains('plus__btn') && e.target.classList.contains('active') ) {
-    const scoreFeature = e.target.parentElement;
-    const score = scoreFeature.children[1];
-    score.innerText = (Number(score.innerText) + 1);
-    e.target.classList.toggle('active');
-    scoreFeature.children[0].classList.toggle('active');
+    const scoreFeature = e.target.parentElement; // select the score feature section the button belongs to
+    const score = scoreFeature.children[1]; // select the 'score' element that has the score
+    score.innerText = (Number(score.innerText) + 1); // convert the score text into number and increase by one
+    e.target.classList.toggle('active'); // deactivate the plus button after score is increased one time
+    scoreFeature.children[0].classList.toggle('active'); // activate the minus button after the score is decreased once
   }
+  // if the user clicks on the minus_btn button
   if(e.target.classList.contains('minus__btn') && e.target.classList.contains('active')) {
-    const scoreFeature = e.target.parentElement;
-    const score = scoreFeature.children[1];
-    score.innerText = (Number(score.innerText) - 1);
-    e.target.classList.toggle('active');
-    scoreFeature.children[2].classList.toggle('active');
+    const scoreFeature = e.target.parentElement; // select the score feature section the button belongs to
+    const score = scoreFeature.children[1]; // select the 'score' element that has the score
+    score.innerText = (Number(score.innerText) - 1); // convert the score text into number and decrease by one
+    e.target.classList.toggle('active'); // deactivate the minus button after score is decreased one time
+    scoreFeature.children[2].classList.toggle('active'); // activate the plus button after the score is decreased once
   }
 
-  //update comment
-  if(e.target.classList.contains('edit__button') && !e.target.disabled) {
-    const editBtn = e.target;
+  //update comment an existing comment or reply of the user
+  // select the edit button of the comment or reply the user is going to edit
+  if(e.target.classList.contains('edit__button')) {
+    // select the comment or reply card the user is going to edit
     const commentCard = e.target.parentElement.parentElement.parentElement;
+    commentCard.classList.toggle('editable'); // toggle editable class for additional functionalities
+
+    // select the modify section [edit button, deletebutton] the user is going to edit
+    const modifyCommentSection = e.target.parentElement;
+
+    // hide the modify comment section
+    modifyCommentSection.classList.toggle('flex'); 
+    modifyCommentSection.classList.toggle('hidden'); 
+
+
+    // select the p element the user is going to edit and set it to editable
     const contentBox = commentCard.querySelector('.content');
     contentBox.setAttribute('contenteditable', true);
-    commentCard.classList.toggle('editable');
-
+    
+    // select the update comment or reply button
     const updateBtn = commentCard.querySelector('.update__button');
     updateBtn.classList.add('active');
-    editBtn.disabled = true;
+
 
     updateBtn.addEventListener('click', () => {
-      const updatedContent = contentBox.innerText;
-      updateBtn.classList.remove('active');
-      commentCard.classList.toggle('editable');
-      contentBox.innerText = updatedContent;
-      editBtn.disabled = false;
-      contentBox.contentEditable = false;
+      const updatedContent = contentBox.innerText; // select the mofified text content
+      updateBtn.classList.remove('active'); // deactivate the update button
+      
+      commentCard.classList.toggle('editable'); // remove editable class to remove the extra comment modification features
+      
+      contentBox.innerText = updatedContent; // update the previous text content with the modified text content
+      
+      contentBox.contentEditable = false; // remove editable attribute from the p element
+
+      // bring back the comment modification seciton [edit button, delete button]
+      modifyCommentSection.classList.toggle('flex'); 
+      modifyCommentSection.classList.toggle('hidden');
     });
   }
 });
